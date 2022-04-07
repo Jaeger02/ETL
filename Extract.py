@@ -7,16 +7,15 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot
 import numpy as np
 from pyparsing import col
-class Extract:
-   
-    def __init__(self,arg_date,src_format,src_bucket,trg_bucket,columns,key,s3): 
+class Parametros:
+    def __init__(self,arg_date,src_format,src_bucket,trg_bucket,columns,key): 
       self.__arg_date=arg_date
       self.__src_format=src_format
       self.__src_bucket=src_bucket
       self.__trg_bucket=trg_bucket
       self.__columns=columns
       self.__key=key
-      self.__s3=s3
+
     def arg_date(self): 
         return self.__arg_date
     def src_format(self): 
@@ -29,9 +28,16 @@ class Extract:
         return self.__columns
     def key(self): 
         return self.__key
-    def s3(self): 
-        return self.__s3
-   
+    
+
+class Init(Parametros):
+    def __init__(self,bucket): 
+      self.__bucket=bucket
+    def bucket(self): 
+        return self.__bucket
+
+class Extract:
+    
     def read_csv_to_df(self,filename, bucket):
         csv_obj = bucket.Object(key=filename).get().get('Body').read().decode('utf-8')
         data = StringIO(csv_obj)
